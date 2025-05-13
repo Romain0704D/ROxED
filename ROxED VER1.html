@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espace Étudiant - BUT Informatique</title>
+    <style>
+        :root {
+            --bg-color: #1a1a1a;
+            --text-color: #f0f0f0;
+            --accent-color: #3498db;
+            --secondary-bg: #252525;
+            --hover-color: #2980b9;
+            --border-color: #333;
+            --header-bg: #111;
+            --menu-width: 250px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--header-bg);
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+            height: 60px;
+        }
+
+        .menu-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            margin-right: 15px;
+            transition: background-color 0.3s;
+        }
+
+        .menu-btn:hover {
+            background-color: var(--hover-color);
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .container {
+            display: flex;
+            margin-top: 60px;
+            /* Header height */
+            min-height: calc(100vh - 60px);
+        }
+
+        .sidebar {
+            background-color: var(--secondary-bg);
+            width: var(--menu-width);
+            position: fixed;
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            transform: translateX(-100%);
+            z-index: 99;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar.active {
+            transform: translateX(0);
+        }
+
+        .sidebar-menu {
+            padding: 1rem 0;
+        }
+
+        .menu-category {
+            margin-bottom: 10px;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            background-color: #333;
+            cursor: pointer;
+            border-left: 4px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .category-header:hover {
+            background-color: #444;
+            border-left-color: var(--accent-color);
+        }
+
+        .category-header span {
+            flex-grow: 1;
+            font-weight: 500;
+        }
+
+        .category-header i {
+            transition: transform 0.3s;
+        }
+
+        .category-header.active i {
+            transform: rotate(90deg);
+        }
+
+        .category-items {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .category-items.show {
+            max-height: 500px;
+        }
+
+        .category-item {
+            padding: 0.6rem 1rem 0.6rem 2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+            display: block;
+            color: var(--text-color);
+            text-decoration: none;
+        }
+
+        .category-item:hover {
+            background-color: #3a3a3a;
+            border-left-color: var(--accent-color);
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 1.5rem;
+            margin-left: 0;
+            transition: margin-left 0.3s ease;
+        }
+
+        .main-content.shifted {
+            margin-left: var(--menu-width);
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        .page-title {
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .page-content {
+            line-height: 1.6;
+        }
+
+        .card {
+            background-color: var(--secondary-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+        }
+
+        .card h3 {
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+
+        .document-card {
+            display: flex;
+            flex-direction: column;
+            padding: 2rem; /* Augmenter le padding pour plus d'espace interne */
+            margin: 2rem auto; /* Ajouter de l'espace autour et centrer */
+            border: 1px solid var(--border-color);
+            background-color: var(--secondary-bg);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Accentuer l'ombre pour un effet visuel agréable */
+            border-radius: 10px; /* Arrondir légèrement les coins */
+            max-width: 1000px; /* Augmenter la largeur maximale */
+        }
+
+        .document-preview {
+            border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+            height: 400px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #222;
+        }
+
+        .document-preview img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .download-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem; /* Ajouter un espacement au-dessus du bouton */
+        }
+
+        .download-btn:hover {
+            background-color: var(--hover-color);
+        }
+
+        /* Home page styling */
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background-color: var(--secondary-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card i {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* PDF Viewer styles */
+        .pdf-container {
+            width: 100%; /* S'assurer qu'elle occupe toute la largeur de la carte */
+            height: auto;
+            padding: 0; /* Supprimer tout padding inutile */
+        }
+
+        .pdf-controls {
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+            width: 100%;
+            background-color: #333;
+        }
+
+        .pdf-controls button {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            margin: 0 5px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .pdf-controls button:hover {
+            background-color: var(--hover-color);
+        }
+
+        .pdf-controls span {
+            margin: 0 10px;
+            line-height: 30px;
+        }
+
+        .pdf-viewport {
+            height: 500px; /* Garder la hauteur de la prévisualisation */
+            height: 1270px;
+            overflow: auto;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 0;
+        }
+
+        /* Responsive styling */
+        @media (max-width: 768px) {
+            .main-content.shifted {
+                margin-left: 0;
+            }
+
+            .sidebar {
+                width: 80%;
+                max-width: var(--menu-width);
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .pdf-viewport {
+                height: 400px;
+            }
+        }
+    </style>
+    <!-- Ajouter PDFjs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.10.111/pdf.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <button class="menu-btn" id="menuToggle">☰ Menu</button>
+        <h1 id="currentPageTitle">Accueil</h1>
+    </header>
+
+    <div class="container">
+        <div class="sidebar" id="sidebar">
+            <nav class="sidebar-menu">
+                <div class="menu-category">
+                    <a href="#home" class="category-item" onclick="showPage('home')">Accueil</a>
+                </div>
+
+                <div class="menu-category">
+                    <div class="category-header" onclick="toggleCategory(this)">
+                        <span>Cours</span>
+                        <i>▶</i>
+                    </div>
+                    <div class="category-items">
+                        <a href="#cours-r107" class="category-item" onclick="showPage('cours-r107')">R107 -
+                            Programmation</a>
+                        <a href="#cours-r206" class="category-item" onclick="showPage('cours-r206')">R206 - Anglais</a>
+                        <a href="#cours-r202" class="category-item" onclick="showPage('cours-r202')">R202 -
+                            Virtualisation</a>
+                    </div>
+                </div>
+
+                <div class="menu-category">
+                    <div class="category-header" onclick="toggleCategory(this)">
+                        <span>QCM</span>
+                        <i>▶</i>
+                    </div>
+                    <div class="category-items">
+                        <a href="#qcm-r107" class="category-item" onclick="showPage('qcm-r107')">QCM R107</a>
+                        <a href="#qcm-r206" class="category-item" onclick="showPage('qcm-r206')">QCM R206</a>
+                        <a href="#qcm-r202" class="category-item" onclick="showPage('qcm-r202')">QCM R202</a>
+                    </div>
+                </div>
+
+                <div class="menu-category">
+                    <div class="category-header" onclick="toggleCategory(this)">
+                        <span>Documents Personnels</span>
+                        <i>▶</i>
+                    </div>
+                    <div class="category-items">
+                        <a href="#document-anglais-oral" class="category-item"
+                            onclick="showPage('document-anglais-oral')">Anglais Oral R206</a>
+                        <a href="#document-virtualisation-cm1" class="category-item"
+                            onclick="showPage('document-virtualisation-cm1')">Virtualisation CM1 R408</a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <main class="main-content" id="mainContent">
+            <!-- Page d'accueil -->
+            <div class="page active" id="home">
+                <h2 class="page-title">Bienvenue sur votre espace étudiant</h2>
+                <div class="welcome-section">
+                    <p>Accédez à vos cours, QCM et documents personnels en quelques clics.</p>
+                </div>
+
+                <div class="features">
+                    <div class="feature-card">
+                        <div>📚</div>
+                        <h3>Cours</h3>
+                        <p>Accédez à tous vos cours organisés par ressources</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div>✓</div>
+                        <h3>QCM</h3>
+                        <p>Entraînez-vous avec les QCM pour chaque ressource</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div>📄</div>
+                        <h3>Documents Personnels</h3>
+                        <p>Gérez et téléchargez vos documents personnels</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pages Cours -->
+            <div class="page" id="cours-r107">
+                <h2 class="page-title">R107 - Programmation</h2>
+                <div class="card">
+                    <h3>Introduction à la programmation</h3>
+                    <div class="page-content">
+                        <p>Ce cours couvre les bases de la programmation et permet aux étudiants de développer leurs
+                            compétences en codage.</p>
+                        <p>Parmi les sujets abordés :</p>
+                        <ul>
+                            <li>Syntaxe et structure de base</li>
+                            <li>Variables et types de données</li>
+                            <li>Structures de contrôle</li>
+                            <li>Fonctions et procédures</li>
+                            <li>Debugging et optimisation du code</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page" id="cours-r206">
+                <h2 class="page-title">R206 - Anglais</h2>
+                <div class="card">
+                    <h3>Anglais technique</h3>
+                    <div class="page-content">
+                        <p>Ce cours est conçu pour améliorer vos compétences en anglais technique et professionnel.</p>
+                        <p>Principaux objectifs :</p>
+                        <ul>
+                            <li>Communiquer efficacement en milieu professionnel</li>
+                            <li>Comprendre et utiliser le vocabulaire technique</li>
+                            <li>Présenter des projets en anglais</li>
+                            <li>Rédiger des documents techniques</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page" id="cours-r202">
+                <h2 class="page-title">R202 - Virtualisation</h2>
+
+                <div class="card document-card">
+                    <h3>Synthèse de cours</h3>
+                    <div style="margin-bottom: 1rem;">
+                        <p>Synthèse de cours de la ressource.</p>
+                        <a href="r202.pdf" class="download-btn" style="margin-bottom: 1rem;" download>Télécharger le
+                            PDF</a>
+                    </div>
+                    <div class="pdf-container">
+                        <div class="pdf-controls">
+                            <button id="prev-page">⬅️ Page précédente</button>
+                            <span id="page-num">Page 1 / 1</span>
+                            <button id="next-page">Page suivante ➡️</button>
+                        </div>
+                        <div class="pdf-viewport">
+                            <canvas id="pdfViewer"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pages QCM -->
+            <div class="page" id="qcm-r107">
+                <h2 class="page-title">QCM - R107 Programmation</h2>
+                <div class="card">
+                    <h3>Test de connaissances en programmation</h3>
+                    <div class="page-content">
+                        <p>Ce QCM vous permet de tester vos connaissances sur les concepts fondamentaux de la
+                            programmation.</p>
+                        <div class="qcm-sample">
+            <!-- Pages QCM -->
+            <div class="page" id="qcm-r107">
+                <h2 class="page-title">QCM - R107 Programmation</h2>
+                <div class="card">
+                    <h3>Test de connaissances en programmation</h3>
+                    <div class="page-content">
+                        <p>Ce QCM vous permet de tester vos connaissances sur les concepts fondamentaux de la
+                            programmation.</p>
+                        <div class="qcm-sample">
+                            <p><strong>1. Qu'est-ce qu'une variable ?</strong></p>
+                            <p>a) Un conteneur pour stocker des données<br>
+                                b) Une fonction mathématique<br>
+                                c) Un type de boucle<br>
+                                d) Un opérateur logique</p>
+
+                            <p><strong>2. Qu'est-ce que le debugging ?</strong></p>
+                            <p>a) La création de nouvelles fonctionnalités<br>
+                                b) L'identification et la correction d'erreurs dans le code<br>
+                                c) L'optimisation du code pour plus de performance<br>
+                                d) La documentation du code</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page" id="qcm-r206">
+                <h2 class="page-title">QCM - R206 Anglais</h2>
+                <div class="card">
+                    <h3>Test de compréhension en anglais technique</h3>
+                    <div class="page-content">
+                        <p>Ce QCM évalue votre compréhension du vocabulaire technique en anglais.</p>
+                        <div class="qcm-sample">
+                            <p><strong>1. What does "deployment" refer to in IT context?</strong></p>
+                            <p>a) Removing software from systems<br>
+                                b) Installing and activating software on a system<br>
+                                c) Testing software before release<br>
+                                d) Writing documentation</p>
+
+                            <p><strong>2. What is a "bug" in programming?</strong></p>
+                            <p>a) A feature request<br>
+                                b) A small insect<br>
+                                c) An error or flaw in the code<br>
+                                d) A piece of hardware</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page" id="qcm-r202">
+                <h2 class="page-title">QCM - R202 Virtualisation</h2>
+                <div class="card">
+                    <h3>Test sur les concepts de virtualisation</h3>
+                    <div class="page-content">
+                        <p>Ce QCM évalue votre compréhension des concepts et techniques de virtualisation.</p>
+                        <div class="qcm-sample">
+                            <p><strong>1. Qu'est-ce qu'un hyperviseur de type 1 ?</strong></p>
+                            <p>a) Un logiciel qui s'exécute sur un système d'exploitation existant<br>
+                                b) Un logiciel qui s'interface directement avec le matériel<br>
+                                c) Une machine virtuelle<br>
+                                d) Un système de stockage virtuel</p>
+
+                            <p><strong>2. Quel est l'avantage principal de la virtualisation dans un environnement de
+                                    développement ?</strong></p>
+                            <p>a) Meilleure performance des applications<br>
+                                b) Réduction de la consommation d'énergie<br>
+                                c) Possibilité de tester sur plusieurs environnements avec une seule machine<br>
+                                d) Simplification du code</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pages Documents Personnels -->
+            <div class="page" id="document-anglais-oral">
+                <h2 class="page-title">Document Personnel - Anglais Oral R206</h2>
+                <div class="card document-card">
+                    <h3>Présentation orale en anglais</h3>
+                    <div class="document-preview">
+                        <img src="/api/placeholder/400/320" alt="Aperçu du document Anglais Oral" />
+                    </div>
+                    <p>Ce document contient votre présentation orale pour le cours d'anglais R206, incluant votre
+                        expérience en première année de BUT R&T.</p>
+                    <a href="#" class="download-btn">Télécharger le PDF</a>
+                </div>
+            </div>
+
+            <div class="page" id="document-virtualisation-cm1">
+                <h2 class="page-title">Document Personnel - Virtualisation CM1 R202</h2>
+                <div class="card document-card">
+                    <h3>Cours Magistral 1 - Introduction à la virtualisation</h3>
+                    <div class="document-preview">
+                        <img src="/api/placeholder/400/320" alt="Aperçu du document Virtualisation CM1" />
+                    </div>
+                    <p>Ce document contient les notes du premier cours magistral sur la virtualisation, couvrant les
+                        principes fondamentaux et les types d'hyperviseurs.</p>
+                    <a href="#" class="download-btn">Télécharger le PDF</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Configuration de PDF.js
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.10.111/pdf.worker.min.js';
+
+        // Variables pour la navigation dans le PDF
+        let pdfDoc = null;
+        let pageNum = 1;
+        let pageRendering = false;
+        let pageNumPending = null;
+        let scale = 1.5;
+        let canvas = document.getElementById('pdfViewer');
+        let ctx = canvas.getContext('2d');
+
+        // Menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            mainContent.classList.toggle('shifted');
+        });
+
+        // Toggle category
+        function toggleCategory(element) {
+            element.classList.toggle('active');
+            const categoryItems = element.nextElementSibling;
+            categoryItems.classList.toggle('show');
+        }
+
+        // Render une page spécifique du PDF
+        function renderPage(num) {
+            pageRendering = true;
+
+            // Obtenir la page
+            pdfDoc.getPage(num).then(function (page) {
+                // Ajuster la taille du viewport pour s'adapter à la largeur du conteneur
+                const viewport = page.getViewport({ scale: scale });
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+
+                // Préparer le contexte de rendu
+                const renderContext = {
+                    canvasContext: ctx,
+                    viewport: viewport
+                };
+
+                // Rendre la page
+                const renderTask = page.render(renderContext);
+
+                // Attendre que le rendu soit terminé
+                renderTask.promise.then(function () {
+                    pageRendering = false;
+
+                    // S'il y a une page en attente, la rendre maintenant
+                    if (pageNumPending !== null) {
+                        renderPage(pageNumPending);
+                        pageNumPending = null;
+                    }
+                });
+            }).catch(function (error) {
+                console.error('Erreur lors du rendu de la page:', error);
+                ctx.font = '16px Arial';
+                ctx.fillStyle = 'red';
+                ctx.fillText('Erreur de rendu de la page ' + num, 20, 100);
+                pageRendering = false;
+            });
+
+            // Mettre à jour le compteur de page
+            document.getElementById('page-num').textContent = 'Page ' + num + ' / ' + pdfDoc.numPages;
+        }
+
+        // Fonction pour changer de page
+        function queueRenderPage(num) {
+            if (pageRendering) {
+                pageNumPending = num;
+            } else {
+                renderPage(num);
+            }
+        }
+
+        // Afficher la page précédente
+        function onPrevPage() {
+            if (pageNum <= 1) {
+                return;
+            }
+            pageNum--;
+            queueRenderPage(pageNum);
+        }
+
+        // Afficher la page suivante
+        function onNextPage() {
+            if (pageNum >= pdfDoc.numPages) {
+                return;
+            }
+            pageNum++;
+            queueRenderPage(pageNum);
+        }
+
+        // Charger le PDF
+        function loadPDF(url) {
+            // Réinitialiser la page actuelle
+            pageNum = 1;
+
+            // Charger le document
+            pdfjsLib.getDocument(url).promise.then(function (pdf) {
+                pdfDoc = pdf;
+
+                // Mettre à jour les contrôles
+                document.getElementById('page-num').textContent = 'Page ' + pageNum + ' / ' + pdf.numPages;
+
+                // Activer les boutons de navigation
+                document.getElementById('prev-page').addEventListener('click', onPrevPage);
+                document.getElementById('next-page').addEventListener('click', onNextPage);
+
+                // Rendre la première page
+                renderPage(pageNum);
+            }).catch(function (error) {
+                console.error('Erreur lors du chargement du PDF:', error);
+                ctx.font = '16px Arial';
+                ctx.fillStyle = 'red';
+                ctx.fillText('Impossible de charger le PDF. Vérifiez le chemin du fichier.', 20, 100);
+            });
+        }
+
+        // Show page
+        function showPage(pageId) {
+            // Update active page
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+
+            const activePage = document.getElementById(pageId);
+            activePage.classList.add('active');
+
+            // Update header title
+            const pageTitle = activePage.querySelector('.page-title').textContent;
+            document.getElementById('currentPageTitle').textContent = pageTitle;
+
+            // Close sidebar on mobile
+            if (window.innerWidth <= 768) {
+                sidebar.classList.remove('active');
+                mainContent.classList.remove('shifted');
+            }
+
+            // Charger le PDF si on est sur la page cours-r202
+            if (pageId === 'cours-r202') {
+                canvas = document.getElementById('pdfViewer');
+                ctx = canvas.getContext('2d');
+                loadPDF('r202.pdf');
+            }
+        }
+
+        // Ajuster l'échelle du PDF quand la taille de la fenêtre change
+        function adjustPDFScale() {
+            if (pdfDoc) {
+                // Recalculer l'échelle
+                const viewport = document.querySelector('.pdf-viewport');
+                const newScale = (viewport.clientWidth - 40) / canvas.width;
+
+                if (Math.abs(newScale - scale) > 0.1) {
+                    scale = newScale;
+                    renderPage(pageNum);
+                }
+            }
+        }
+
+        // Écouter les changements de taille de la fenêtre
+        window.addEventListener('resize', adjustPDFScale);
+
+        // Initialize - expand first category and select first item
+        document.addEventListener('DOMContentLoaded', () => {
+            // Start with sidebar open for desktop
+            if (window.innerWidth > 768) {
+                sidebar.classList.add('active');
+                mainContent.classList.add('shifted');
+            }
+        });
+    </script>
+</body>
+
+</html>
