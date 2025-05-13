@@ -1,0 +1,197 @@
+%PDF-1.3
+3 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/Contents 4 0 R>>
+endobj
+4 0 obj
+<</Length 2521>>
+stream
+2 J
+0.57 w
+BT /F1 14.00 Tf ET
+BT 149.44 795.17 Td (Synthese : Virtualisation & Conteneurisation) Tj ET
+BT /F1 12.00 Tf ET
+BT 31.19 753.25 Td (1. Introduction generale) Tj ET
+BT /F2 11.00 Tf ET
+6.247 Tw
+BT 31.19 722.37 Td (La virtualisation et la conteneurisation sont deux technologies essentielles permettant l'execution) Tj ET
+1.309 Tw
+BT 31.19 699.69 Td (d'environnements logiciels isoles. Elles favorisent la portabilite, l'efficacite et la securite dans les systemes) Tj ET
+0 Tw
+BT 31.19 677.01 Td (informatiques modernes.) Tj ET
+BT /F1 12.00 Tf ET
+BT 31.19 628.52 Td (2. Virtualisation) Tj ET
+BT /F2 11.00 Tf ET
+1.490 Tw
+BT 31.19 597.64 Td (La virtualisation est le processus consistant a creer une version virtuelle dun environnement informatique.) Tj ET
+1.383 Tw
+BT 31.19 574.96 Td (Elle permet dexecuter plusieurs systemes dexploitation \(OS\) sur une seule machine physique, grace a un) Tj ET
+0 Tw
+BT 31.19 552.29 Td (logiciel appele hyperviseur.) Tj ET
+1.145 Tw
+BT 31.19 506.93 Td (Un hyperviseur est un composant cle qui permet de creer et de gerer des machines virtuelles \(VMs\). Il en) Tj ET
+0 Tw
+BT 31.19 484.26 Td (existe deux types :) Tj ET
+0.601 Tw
+BT 31.19 438.90 Td (- Hyperviseur de Type 1 \(bare-metal\) : fonctionne directement sur le materiel physique. Exemples : VMware) Tj ET
+0 Tw
+BT 31.19 416.22 Td (ESXi, Microsoft Hyper-V, Xen.) Tj ET
+0.132 Tw
+BT 31.19 393.55 Td (- Hyperviseur de Type 2 \(hosted\) : fonctionne comme une application sur un OS hote. Exemples : VirtualBox,) Tj ET
+0 Tw
+BT 31.19 370.87 Td (VMware Workstation.) Tj ET
+BT 31.19 325.52 Td (Avantages : isolation forte, execution de plusieurs OS independants.) Tj ET
+BT 31.19 302.84 Td (Limites : consommation de ressources importante, demarrage plus lent.) Tj ET
+BT /F1 12.00 Tf ET
+BT 31.19 254.35 Td (3. Conteneurisation sous Linux \(detailee\)) Tj ET
+BT /F2 11.00 Tf ET
+2.996 Tw
+BT 31.19 223.47 Td (La conteneurisation est une alternative plus legere a la virtualisation. Elle consiste a empaqueter une) Tj ET
+0 Tw
+BT 31.19 200.79 Td (application avec toutes ses dependances dans un conteneur.) Tj ET
+1.345 Tw
+BT 31.19 155.44 Td (Contrairement a la virtualisation, les conteneurs partagent le meme noyau Linux de l'hote, ce qui les rend) Tj ET
+0 Tw
+BT 31.19 132.76 Td (beaucoup plus legers et rapides a demarrer.) Tj ET
+BT 31.19 87.41 Td (Techniquement, elle repose sur plusieurs fonctionnalites du noyau Linux :) Tj ET
+BT 31.19 64.73 Td (- chroot : restreint un processus a un sous-arborescence du systeme de fichiers.) Tj ET
+
+endstream
+endobj
+5 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/Contents 6 0 R>>
+endobj
+6 0 obj
+<</Length 3315>>
+stream
+2 J
+0.57 w
+BT /F2 11.00 Tf ET
+BT /F1 14.00 Tf ET
+BT 149.44 795.17 Td (Synthese : Virtualisation & Conteneurisation) Tj ET
+BT /F2 11.00 Tf ET
+BT 31.19 756.38 Td (- namespaces : isolent les ressources \(PID, reseau, utilisateurs, etc.\).) Tj ET
+BT 31.19 733.70 Td (- cgroups : controlent l'utilisation des ressources \(CPU, memoire, disque\).) Tj ET
+5.065 Tw
+BT 31.19 711.03 Td (- unionFS \(overlay\) : systeme de fichiers empilable, permettant de composer les couches \(base,) Tj ET
+0 Tw
+BT 31.19 688.35 Td (modification\).) Tj ET
+BT 31.19 643.00 Td (Outils populaires : Docker, Podman, LXC, containerd.) Tj ET
+BT 31.19 620.32 Td (Avantages : rapidite, portabilite, efficacite.) Tj ET
+BT 31.19 597.64 Td (Limites : isolation plus faible, dependance au noyau hote.) Tj ET
+BT /F1 12.00 Tf ET
+BT 31.19 549.15 Td (4. Comparatif Virtualisation vs Conteneurisation) Tj ET
+BT /F1 11.00 Tf ET
+28.35 532.91 170.08 -22.68 re S BT 95.66 518.27 Td (Critere) Tj ET
+198.43 532.91 170.08 -22.68 re S BT 248.63 518.27 Td (Virtualisation) Tj ET
+368.51 532.91 170.08 -22.68 re S BT 408.32 518.27 Td (Conteneurisation) Tj ET
+BT /F2 10.00 Tf ET
+28.35 510.23 170.08 -22.68 re S BT 31.19 495.89 Td (Isolation) Tj ET
+198.43 510.23 170.08 -22.68 re S BT 201.26 495.89 Td (Forte) Tj ET
+368.51 510.23 170.08 -22.68 re S BT 371.34 495.89 Td (Moyenne) Tj ET
+28.35 487.56 170.08 -22.68 re S BT 31.19 473.22 Td (Demarrage) Tj ET
+198.43 487.56 170.08 -22.68 re S BT 201.26 473.22 Td (Lent) Tj ET
+368.51 487.56 170.08 -22.68 re S BT 371.34 473.22 Td (Rapide) Tj ET
+28.35 464.88 170.08 -22.68 re S BT 31.19 450.54 Td (Portabilite) Tj ET
+198.43 464.88 170.08 -22.68 re S BT 201.26 450.54 Td (Moyenne) Tj ET
+368.51 464.88 170.08 -22.68 re S BT 371.34 450.54 Td (Excellente) Tj ET
+28.35 442.20 170.08 -22.68 re S BT 31.19 427.86 Td (Poids) Tj ET
+198.43 442.20 170.08 -22.68 re S BT 201.26 427.86 Td (Lourd) Tj ET
+368.51 442.20 170.08 -22.68 re S BT 371.34 427.86 Td (Leger) Tj ET
+28.35 419.52 170.08 -22.68 re S BT 31.19 405.19 Td (Securite) Tj ET
+198.43 419.52 170.08 -22.68 re S BT 201.26 405.19 Td (Meilleure) Tj ET
+368.51 419.52 170.08 -22.68 re S BT 371.34 405.19 Td (Moins isole) Tj ET
+28.35 396.85 170.08 -22.68 re S BT 31.19 382.51 Td (Usage typique) Tj ET
+198.43 396.85 170.08 -22.68 re S BT 201.26 382.51 Td (Infra cloud) Tj ET
+368.51 396.85 170.08 -22.68 re S BT 371.34 382.51 Td (Microservices) Tj ET
+BT /F1 12.00 Tf ET
+BT 31.19 333.72 Td (5. Cas concrets dusage) Tj ET
+BT /F2 11.00 Tf ET
+BT 31.19 302.84 Td (- Virtualisation : serveurs cloud \(AWS EC2\), tests multi-OS, machines critiques isolement fort.) Tj ET
+2.917 Tw
+BT 31.19 280.16 Td (- Conteneurisation : microservices, pipelines CI/CD, orchestration avec Kubernetes, deploiement rapide) Tj ET
+0 Tw
+BT 31.19 257.48 Td (d'applications.) Tj ET
+BT /F1 12.00 Tf ET
+BT 31.19 209.00 Td (6. Conclusion) Tj ET
+BT /F2 11.00 Tf ET
+BT 31.19 178.11 Td (La virtualisation et la conteneurisation repondent a des besoins complementaires :) Tj ET
+BT 31.19 155.44 Td (- La virtualisation offre une isolation forte au prix dun surcout en ressources.) Tj ET
+BT 31.19 132.76 Td (- La conteneurisation favorise la legerete, lagilite et la portabilite, ideale pour le cloud natif.) Tj ET
+BT 31.19 110.08 Td (Le choix depend du contexte : securite, performance, scalabilite et architecture cible.) Tj ET
+
+endstream
+endobj
+1 0 obj
+<</Type /Pages
+/Kids [3 0 R 5 0 R ]
+/Count 2
+/MediaBox [0 0 595.28 841.89]
+>>
+endobj
+7 0 obj
+<</Type /Font
+/BaseFont /Helvetica-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+>>
+endobj
+8 0 obj
+<</Type /Font
+/BaseFont /Helvetica
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+>>
+endobj
+2 0 obj
+<<
+/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]
+/Font <<
+/F1 7 0 R
+/F2 8 0 R
+>>
+/XObject <<
+>>
+>>
+endobj
+9 0 obj
+<<
+/Producer (PyFPDF 1.7.2 http://pyfpdf.googlecode.com/)
+/CreationDate (D:20250513174742)
+>>
+endobj
+10 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+/OpenAction [3 0 R /FitH null]
+/PageLayout /OneColumn
+>>
+endobj
+xref
+0 11
+0000000000 65535 f 
+0000006101 00000 n 
+0000006391 00000 n 
+0000000009 00000 n 
+0000000087 00000 n 
+0000002658 00000 n 
+0000002736 00000 n 
+0000006194 00000 n 
+0000006295 00000 n 
+0000006505 00000 n 
+0000006614 00000 n 
+trailer
+<<
+/Size 11
+/Root 10 0 R
+/Info 9 0 R
+>>
+startxref
+6718
+%%EOF
